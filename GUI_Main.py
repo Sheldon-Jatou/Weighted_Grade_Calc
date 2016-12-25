@@ -35,7 +35,8 @@ def add_grade():
 
     print(len(grades))
 
-add = Button(top, text='ADD GRADE', command=add_grade)
+add = Button(top, text='ADD GRADE')
+add.bind('<Button-1>', add_grade)
 add.grid(row=0, columnspan=4)
 
 

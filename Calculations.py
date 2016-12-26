@@ -7,6 +7,14 @@ from tkinter import *
 
 
 def gpa_calc(n):
+    '''(str) -> (str,str)
+
+    Given a percentage grade represented by
+    a string, return a tuple contaning both the
+    GPA (based on UofT's 4.0 scale), and the associated
+    letter grade.
+
+    '''
     g = ''
     l = ''
     if len(n) == 2:
@@ -70,6 +78,13 @@ def gpa_calc(n):
 
 
 def calculate_average(grades, weights):
+    '''(list of Entries, list of Entries) -> (float,str,str)
+
+    Calculates the weighted average given a list
+    of grades and their associated weights. Returns
+    a tuple containing the percentage grade, GPA, and letter grade.
+
+    '''
     totals = []
     global f, gpa, letter
 

@@ -4,6 +4,7 @@ Created on Dec 25, 2016
 @author: Sheldon Jatou
 '''
 from tkinter import *
+import Calculations as cal
 
 main = Tk()
 
@@ -33,8 +34,6 @@ def add_grade():
     grades[-1].grid(row=len(grades))
     weights[-1].grid(row=len(weights), column=2)
 
-    print(len(grades))
-
 
 def reset_all():
     for i in range(len(grades)):
@@ -49,67 +48,8 @@ reset = Button(top, text='   RESET   ', command=reset_all)
 reset.grid(row=0, column=2, sticky=W)
 
 
-def calculate_average():
-    totals = []
-    global f, gpa, letter
-
-    for i in range(len(grades)):
-        try:
-            if grades[i].get() != '' and weights[i].get() != '':
-                total = (float(grades[i].get()) / 100) * \
-                    (float(weights[i].get()) / 100)
-                totals.append(total)
-        except ValueError:
-            pass
-
-    f = round(sum(totals) * 100, 2)
-
-    if f in range(0, 50):
-        gpa = 0
-        letter = 'F'
-    elif f in range(50, 53):
-        gpa = 0.7
-        letter = 'D-'
-    elif f in range(53, 57):
-        gpa = 1.0
-        letter = 'D'
-    elif f in range(57, 60):
-        gpa = 1.3
-        letter = 'D+'
-    elif f in range(60, 63):
-        gpa = 1.7
-        letter = 'C-'
-    elif f in range(63, 67):
-        gpa = 2.0
-        letter = 'C'
-    elif f in range(67, 70):
-        gpa = 2.3
-        letter = 'C+'
-    elif f in range(70, 73):
-        gpa = 2.7
-        letter = 'B-'
-    elif f in range(73, 77):
-        gpa = 3.0
-        letter = 'B'
-    elif f in range(77, 80):
-        gpa = 3.3
-        letter = 'B+'
-    elif f in range(80, 85):
-        gpa = 3.7
-        letter = 'A-'
-    elif f in range(85, 90):
-        gpa = 4.0
-        letter = 'A'
-    elif f >= 90:
-        gpa = 4.0
-        letter = 'A+'
-
-    final.config(
-        text='FINAL GRADE: {0}% GPA: {1} GRADE: {2}'.format(f, gpa, letter))
-
 bottom = Frame(main)
 bottom.pack(side=BOTTOM)
-
 f = '-'
 gpa = '-'
 letter = '-'
@@ -118,7 +58,13 @@ final = Label(
 final.grid(column=1)
 
 
-calc = Button(bottom, text='CALCULATE TOTAL', command=calculate_average)
+def update_mark():
+    f, gpa, letter = cal.calculate_average(grades, weights)
+    final.config(
+        text='FINAL GRADE: {0}% GPA: {1} GRADE: {2}'.format(f, gpa, letter))
+
+calc = Button(bottom, text='CALCULATE TOTAL',
+              command=update_mark)
 calc.grid(columnspan=2, sticky=S)
 
 main.mainloop()

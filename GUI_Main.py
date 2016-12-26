@@ -121,14 +121,4 @@ final.grid(column=1)
 calc = Button(bottom, text='CALCULATE TOTAL', command=calculate_average)
 calc.grid(columnspan=2, sticky=S)
 
-for i in range(5):
-    Grid.rowconfigure(main, i, weight=1)
-    Grid.columnconfigure(main, i, weight=1)
-
-    Grid.rowconfigure(top, i, weight=1)
-    Grid.columnconfigure(top, i, weight=1)
-
-    Grid.rowconfigure(bottom, i, weight=1)
-    Grid.columnconfigure(bottom, i, weight=1)
-
 main.mainloop()

@@ -35,14 +35,23 @@ def add_grade():
 
     print(len(grades))
 
-add = Button(top, text='ADD GRADE')
-add.bind('<Button-1>', add_grade)
-add.grid(row=0, columnspan=4)
+
+def reset_all():
+    for i in range(len(grades)):
+        grades[i].delete(0, END)
+        weights[i].delete(0, END)
+
+
+add = Button(top, text='ADD ROW', command=add_grade)
+add.grid(row=0, columnspan=2, sticky=E)
+
+reset = Button(top, text='   RESET   ', command=reset_all)
+reset.grid(row=0, column=2, sticky=W)
 
 
 def calculate_average():
     totals = []
-    global f
+    global f, gpa, letter
 
     for i in range(len(grades)):
         try:
@@ -53,20 +62,73 @@ def calculate_average():
         except ValueError:
             pass
 
-    f = round(sum(totals) * 100, 1)
+    f = round(sum(totals) * 100, 2)
 
-    final.config(text='FINAL GRADE: {}'.format(f))
+    if f in range(0, 50):
+        gpa = 0
+        letter = 'F'
+    elif f in range(50, 53):
+        gpa = 0.7
+        letter = 'D-'
+    elif f in range(53, 57):
+        gpa = 1.0
+        letter = 'D'
+    elif f in range(57, 60):
+        gpa = 1.3
+        letter = 'D+'
+    elif f in range(60, 63):
+        gpa = 1.7
+        letter = 'C-'
+    elif f in range(63, 67):
+        gpa = 2.0
+        letter = 'C'
+    elif f in range(67, 70):
+        gpa = 2.3
+        letter = 'C+'
+    elif f in range(70, 73):
+        gpa = 2.7
+        letter = 'B-'
+    elif f in range(73, 77):
+        gpa = 3.0
+        letter = 'B'
+    elif f in range(77, 80):
+        gpa = 3.3
+        letter = 'B+'
+    elif f in range(80, 85):
+        gpa = 3.7
+        letter = 'A-'
+    elif f in range(85, 90):
+        gpa = 4.0
+        letter = 'A'
+    elif f >= 90:
+        gpa = 4.0
+        letter = 'A+'
+
+    final.config(
+        text='FINAL GRADE: {0}% GPA: {1} GRADE: {2}'.format(f, gpa, letter))
 
 bottom = Frame(main)
 bottom.pack(side=BOTTOM)
 
-f = 0
-final = Label(bottom, text='FINAL GRADE: {}'.format(f))
+f = '-'
+gpa = '-'
+letter = '-'
+final = Label(
+    bottom, text='FINAL GRADE: {0}% GPA: {1} LETTER GRADE: {2}'.format(f, gpa, letter))
 final.grid(column=1)
 
 
 calc = Button(bottom, text='CALCULATE TOTAL', command=calculate_average)
-calc.grid(columnspan=4, sticky=S)
+calc.grid(columnspan=2, sticky=S)
 
+for i in range(5):
+    Grid.rowconfigure(main, i, weight=1)
+    Grid.columnconfigure(main, i, weight=1)
+
+    Grid.rowconfigure(top, i, weight=1)
+    Grid.columnconfigure(top, i, weight=1)
+
+    Grid.rowconfigure(bottom, i, weight=1)
+    Grid.columnconfigure(bottom, i, weight=1)
 
 main.mainloop()
